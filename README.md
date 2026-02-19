@@ -2,130 +2,339 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora Rennova</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Rentabilidade - Linha Elleva</title>
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Elleva Calc">
+    <link rel="apple-touch-icon" href="logo.png">
+
     <style>
-        :root { --primary: #002D5E; --secondary: #00A3E0; --success: #2E7D32; --bg: #F0F2F5; }
-        body { font-family: -apple-system, sans-serif; background-color: var(--bg); margin: 0; padding: 10px; }
-        .app-container { max-width: 450px; margin: 0 auto; }
-        
-        header { text-align: center; background: #fff; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        
-        .card { background: #fff; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .concorrente-header { border-left: 6px solid #666; }
-        
-        label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: var(--primary); }
-        input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--secondary); background: #fff; }
+        :root {
+            --primary-blue: #002D5E;
+            --secondary-blue: #00A3E0;
+            --light-blue: #E3F2FD;
+            --success-green: #2E7D32;
+            --bg-gray: #F8F9FA;
+            --white: #FFFFFF;
+        }
 
-        .product-card { border-top: 5px solid var(--secondary); text-align: center; position: relative; }
-        
-        /* Ícones Desenhados em SVG (Substituem as Fotos) */
-        .icon-box { width: 80px; height: 80px; margin: 0 auto 10px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .icon-svg { width: 45px; height: 45px; fill: var(--primary); }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
 
-        .product-name { font-weight: 800; color: var(--primary); margin: 5px 0; font-size: 1.2rem; }
-        .badge { background: var(--secondary); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
-        
-        .result-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 8px 0; border-bottom: 1px solid #eee; }
-        .highlight-gain { background: #e8f5e9; color: var(--success); padding: 12px; border-radius: 10px; margin-top: 10px; font-weight: 800; font-size: 1.2rem; }
-        
-        .simulacao-blue { background: var(--primary); color: #fff; padding: 20px; border-radius: 20px; margin-bottom: 40px; }
-        .sim-item { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .val-eco { color: #4CAF50; font-weight: 800; }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: var(--white);
+            border-bottom: 4px solid var(--secondary-blue);
+            margin-bottom: 25px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+        }
+
+        h1 {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .card-concorrente {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            border-left: 6px solid #666;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #DDD;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--secondary-blue);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--secondary-blue);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #EEE;
+            font-size: 0.9rem;
+        }
+
+        .highlight-box {
+            background: var(--light-blue);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .savings {
+            color: var(--success-green);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .simulation-section {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .simulation-section h2 {
+            margin-top: 0;
+            text-align: center;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 15px;
+        }
+
+        .input-monthly {
+            max-width: 400px;
+            margin: 20px auto;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .sim-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .sim-item {
+            background: var(--white);
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .sim-item strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--success-green);
+            margin-top: 5px;
+        }
+
+        .badge-mg {
+            background: var(--secondary-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="container">
     <header>
-        <svg viewBox="0 0 200 50" style="width:180px;"><text x="10" y="35" font-family="Arial" font-weight="bold" font-size="28" fill="#002D5E">RENNOVA</text></svg>
-        <div style="color: var(--secondary); font-weight: bold; font-size: 0.8rem; letter-spacing: 2px;">ELLEVA LINE</div>
+        <img src="logo.png" alt="Rennova" class="logo">
+        <h1>Rentabilidade Elleva</h1>
     </header>
 
-    <div class="card concorrente-header">
-        <label>Preço Pago no Concorrente (150mg):</label>
-        <input type="number" id="pConc" placeholder="R$ 0,00" oninput="calc()">
+    <div class="card-concorrente">
+        <label>Preço de compra do Concorrente (150mg):</label>
+        <input type="number" id="inputConcorrente" placeholder="R$ 0,00" oninput="calcular()">
     </div>
 
-    <div class="card product-card">
-        <div class="icon-box">
-            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19,2H5C3.9,2,3,2.9,3,4v16c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V4C21,2.9,20.1,2,19,2z M17,19H7v-2h10V19z M17,15H7v-2h10V15z M17,11H7V9h10V11z M17,7H7V5h10V7z"/></svg>
+    <div class="products-grid">
+        <div class="product-card">
+            <img src="elleva.png" alt="Elleva 210mg" class="product-img">
+            <div class="product-name">Elleva <span class="badge-mg">210mg</span></div>
+            <label>Preço Elleva:</label>
+            <input type="number" id="inputElleva" placeholder="R$ 0,00" oninput="calcular()">
+            <div class="info-row" style="margin-top:10px;">
+                <span>Equivalência:</span>
+                <span><strong>1,4 frascos</strong></span>
+            </div>
+            <div class="info-row">
+                <span>Custo Conc. p/ 210mg:</span>
+                <span id="custoFinalConcElleva">R$ 0,00</span>
+            </div>
+            <div class="highlight-box">
+                <div>Vantagem p/ Frasco:</div>
+                <div class="savings" id="vantagemElleva">R$ 0,00</div>
+            </div>
         </div>
-        <div class="product-name">Elleva <span class="badge">210mg</span></div>
-        <p style="font-size:0.8rem; color:#666; margin-bottom:15px;">Equivale a 1,4 frascos</p>
-        <label>Preço Elleva:</label>
-        <input type="number" id="pE210" placeholder="R$ 0,00" oninput="calc()">
-        <div class="result-row" style="margin-top:10px;">
-            <span>Custo Conc. p/ 210mg:</span>
-            <span id="rC210">R$ 0,00</span>
+
+        <div class="product-card">
+            <img src="ellevax.png" alt="Elleva X 630mg" class="product-img">
+            <div class="product-name">Elleva X <span class="badge-mg">630mg</span></div>
+            <label>Preço Elleva X:</label>
+            <input type="number" id="inputEllevaX" placeholder="R$ 0,00" oninput="calcular()">
+            <div class="info-row" style="margin-top:10px;">
+                <span>Equivalência:</span>
+                <span><strong>4,2 frascos</strong></span>
+            </div>
+            <div class="info-row">
+                <span>Custo Conc. p/ 630mg:</span>
+                <span id="custoFinalConcEllevaX">R$ 0,00</span>
+            </div>
+            <div class="highlight-box">
+                <div>Vantagem p/ Frasco:</div>
+                <div class="savings" id="vantagemEllevaX">R$ 0,00</div>
+            </div>
         </div>
-        <div class="highlight-gain">Lucro: <span id="v210">R$ 0,00</span></div>
+
+        <div class="product-card">
+            <img src="elleva150.png" alt="Elleva 150mg" class="product-img">
+            <div class="product-name">Elleva 150 <span class="badge-mg">150mg</span></div>
+            <label>Preço Elleva 150:</label>
+            <input type="number" id="inputElleva150" placeholder="R$ 0,00" oninput="calcular()">
+            <div class="info-row" style="margin-top:10px;">
+                <span>Equivalência:</span>
+                <span><strong>1,0 frasco</strong></span>
+            </div>
+            <div class="info-row">
+                <span>Custo Conc. p/ 150mg:</span>
+                <span id="custoFinalConcElleva150">R$ 0,00</span>
+            </div>
+            <div class="highlight-box">
+                <div>Vantagem p/ Frasco:</div>
+                <div class="savings" id="vantagemElleva150">R$ 0,00</div>
+            </div>
+        </div>
     </div>
 
-    <div class="card product-card">
-        <div class="icon-box" style="background: #e3f2fd;">
-            <svg class="icon-svg" style="fill:var(--secondary)" viewBox="0 0 24 24"><path d="M19,2H5C3.9,2,3,2.9,3,4v16c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V4C21,2.9,20.1,2,19,2z M17,19H7v-2h10V19z M17,15H7v-2h10V15z M17,11H7V9h10V11z M17,7H7V5h10V7z"/></svg>
+    <div class="simulation-section">
+        <h2>Simulação de Consumo Mensal</h2>
+        <div class="input-monthly">
+            <label style="color: white; text-align: center;">Qtd de frascos comprados/mês:</label>
+            <input type="number" id="qtdMes" placeholder="0" oninput="calcular()">
         </div>
-        <div class="product-name">Elleva X <span class="badge" style="background:var(--primary)">630mg</span></div>
-        <p style="font-size:0.8rem; color:#666; margin-bottom:15px;">Equivale a 4,2 frascos</p>
-        <label>Preço Elleva X:</label>
-        <input type="number" id="pEX" placeholder="R$ 0,00" oninput="calc()">
-        <div class="result-row" style="margin-top:10px;">
-            <span>Custo Conc. p/ 630mg:</span>
-            <span id="rCEX">R$ 0,00</span>
+        <div class="sim-grid">
+            <div class="sim-item">
+                Elleva (210mg)
+                <strong id="ecoMesElleva">R$ 0,00</strong>
+                <span style="font-size: 0.7rem; display: block; margin-top:5px;">Economia Anual: <span id="ecoAnoElleva">R$ 0,00</span></span>
+            </div>
+            <div class="sim-item">
+                Elleva X (630mg)
+                <strong id="ecoMesEllevaX">R$ 0,00</strong>
+                <span style="font-size: 0.7rem; display: block; margin-top:5px;">Economia Anual: <span id="ecoAnoEllevaX">R$ 0,00</span></span>
+            </div>
+            <div class="sim-item">
+                Elleva 150 (150mg)
+                <strong id="ecoMesElleva150">R$ 0,00</strong>
+                <span style="font-size: 0.7rem; display: block; margin-top:5px;">Economia Anual: <span id="ecoAnoElleva150">R$ 0,00</span></span>
+            </div>
         </div>
-        <div class="highlight-gain">Lucro: <span id="vEX">R$ 0,00</span></div>
-    </div>
-
-    <div class="card product-card">
-        <div class="icon-box">
-            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12,2L4,5v6.09c0,5.05,3.41,9.76,8,10.91c4.59-1.15,8-5.86,8-10.91V5L12,2z"/></svg>
-        </div>
-        <div class="product-name">Elleva 150 <span class="badge" style="background:#666">150mg</span></div>
-        <p style="font-size:0.8rem; color:#666; margin-bottom:15px;">Equivale a 1,0 frasco</p>
-        <label>Preço Elleva 150:</label>
-        <input type="number" id="pE150" placeholder="R$ 0,00" oninput="calc()">
-        <div class="result-row" style="margin-top:10px;">
-            <span>Custo Conc. p/ 150mg:</span>
-            <span id="rCE150">R$ 0,00</span>
-        </div>
-        <div class="highlight-gain">Lucro: <span id="v150">R$ 0,00</span></div>
-    </div>
-
-    <div class="simulacao-blue">
-        <h3 style="text-align:center; margin:0 0 15px 0;">Projeção Mensal</h3>
-        <label style="color:#fff">Volume de Vendas (Frascos):</label>
-        <input type="number" id="qtd" placeholder="0" oninput="calc()">
-        <div class="sim-item"><span>Ganho Elleva 210:</span><strong class="val-eco" id="m210">R$ 0,00</strong></div>
-        <div class="sim-item"><span>Ganho Elleva X:</span><strong class="val-eco" id="mEX">R$ 0,00</strong></div>
     </div>
 </div>
 
 <script>
-    const f = v => v.toLocaleString('pt-br',{style:'currency',currency:'BRL'});
-    function calc() {
-        const pc = parseFloat(document.getElementById('pConc').value) || 0;
-        const e210 = parseFloat(document.getElementById('pE210').value) || 0;
-        const ex = parseFloat(document.getElementById('pEX').value) || 0;
-        const e150 = parseFloat(document.getElementById('pE150').value) || 0;
-        const q = parseFloat(document.getElementById('qtd').value) || 0;
+    function format(val) {
+        return val.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+    }
 
-        const c210 = pc * 1.4; const cex = pc * 4.2; const c150 = pc * 1.0;
-        document.getElementById('rC210').innerText = f(c210);
-        document.getElementById('rCEX').innerText = f(cex);
-        document.getElementById('rCE150').innerText = f(c150);
+    function calcular() {
+        const pConc = parseFloat(document.getElementById('inputConcorrente').value) || 0;
+        const pE210 = parseFloat(document.getElementById('inputElleva').value) || 0;
+        const pEX = parseFloat(document.getElementById('inputEllevaX').value) || 0;
+        const pE150 = parseFloat(document.getElementById('inputElleva150').value) || 0;
+        const qtd = parseFloat(document.getElementById('qtdMes').value) || 0;
 
-        const v210 = c210 - e210; const vex = cex - ex; const v150 = c150 - e150;
-        document.getElementById('v210').innerText = f(v210);
-        document.getElementById('vEX').innerText = f(vex);
-        document.getElementById('v150').innerText = f(v150);
+        // Custos equivalentes baseados na volumetria
+        const vConcE210 = pConc * 1.4;
+        const vConcEX = pConc * 4.2;
+        const vConcE150 = pConc * 1.0;
 
-        document.getElementById('m210').innerText = f(v210 * q);
-        document.getElementById('mEX').innerText = f(vex * q);
+        document.getElementById('custoFinalConcElleva').innerText = format(vConcE210);
+        document.getElementById('custoFinalConcEllevaX').innerText = format(vConcEX);
+        document.getElementById('custoFinalConcElleva150').innerText = format(vConcE150);
+
+        // Vantagem por frasco
+        const vanteE210 = vConcE210 - pE210;
+        const vanteEX = vConcEX - pEX;
+        const vanteE150 = vConcE150 - pE150;
+
+        document.getElementById('vantagemElleva').innerText = format(vanteE210);
+        document.getElementById('vantagemEllevaX').innerText = format(vanteEX);
+        document.getElementById('vantagemElleva150').innerText = format(vanteE150);
+
+        // Economia Mensal e Anual
+        document.getElementById('ecoMesElleva').innerText = format(vanteE210 * qtd);
+        document.getElementById('ecoAnoElleva').innerText = format(vanteE210 * qtd * 12);
+        document.getElementById('ecoMesEllevaX').innerText = format(vanteEX * qtd);
+        document.getElementById('ecoAnoEllevaX').innerText = format(vanteEX * qtd * 12);
+        document.getElementById('ecoMesElleva150').innerText = format(vanteE150 * qtd);
+        document.getElementById('ecoAnoElleva150').innerText = format(vanteE150 * qtd * 12);
     }
 </script>
+
 </body>
 </html>
