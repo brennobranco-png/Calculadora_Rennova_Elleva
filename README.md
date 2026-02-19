@@ -1,361 +1,224 @@
-# Calculadora_Rennova_Elleva
-Calculadora de rentabilidade Rennova Elleva
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Rentabilidade - Linha Elleva</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calculadora Rennova</title>
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RennovaCalc">
+
     <style>
         :root {
-            --primary-blue: #002D5E;
-            --secondary-blue: #00A3E0;
-            --light-blue: #E3F2FD;
-            --success-green: #2E7D32;
-            --bg-gray: #F8F9FA;
-            --white: #FFFFFF;
+            --primary: #002D5E;
+            --secondary: #00A3E0;
+            --success: #2E7D32;
+            --bg: #F0F2F5;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-gray);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
             margin: 0;
-            padding: 0;
+            padding: 10px;
             color: #333;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .app-container { max-width: 500px; margin: 0 auto; }
 
         header {
             text-align: center;
-            padding: 20px 0;
-            background: var(--white);
-            border-bottom: 4px solid var(--secondary-blue);
-            margin-bottom: 25px;
-            border-radius: 0 0 15px 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
         }
 
-        .logo {
-            max-width: 250px;
-            height: auto;
+        .logo { width: 160px; height: auto; }
+
+        .card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
         }
 
-        h1 {
-            color: var(--primary-blue);
-            font-size: 1.4rem;
-            margin-top: 10px;
-        }
+        label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: var(--primary); }
 
-        /* Seção de Entrada do Concorrente */
-        .card-concorrente {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-            border-left: 6px solid #666;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #444;
-        }
-
-        input[type="number"] {
+        input {
             width: 100%;
             padding: 12px;
-            border: 2px solid #DDD;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
             box-sizing: border-box;
+            background: #f9f9f9;
             outline: none;
-            transition: border 0.3s;
         }
 
-        input[type="number"]:focus {
-            border-color: var(--secondary-blue);
-        }
+        input:focus { border-color: var(--secondary); }
 
-        /* Grid de Produtos */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+        .product-card { border-top: 5px solid var(--secondary); text-align: center; }
+        
+        .product-img { height: 130px; object-fit: contain; margin: 10px 0; }
 
-        .product-card {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            display: flex;
-            flex-direction: column;
-            border-top: 5px solid var(--secondary-blue);
-        }
+        .product-name { font-weight: 800; color: var(--primary); margin: 5px 0; font-size: 1.1rem; }
 
-        .product-img {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
+        .equivalencia { font-size: 0.8rem; color: #666; margin-bottom: 10px; }
 
-        .product-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary-blue);
-            text-align: center;
-            margin-bottom: 15px;
-            min-height: 50px;
-        }
-
-        .info-row {
+        .result-row {
             display: flex;
             justify-content: space-between;
+            font-size: 0.9rem;
             padding: 8px 0;
-            border-bottom: 1px solid #EEE;
-            font-size: 0.95rem;
+            border-bottom: 1px solid #eee;
         }
 
-        .highlight-box {
-            background: var(--light-blue);
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            text-align: center;
-        }
-
-        .savings {
-            color: var(--success-green);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        /* Parte 2: Simulação Azul */
-        .simulation-section {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 30px;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-
-        .simulation-section h2 {
-            margin-top: 0;
-            text-align: center;
-            font-size: 1.3rem;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding-bottom: 15px;
-        }
-
-        .input-monthly {
-            max-width: 400px;
-            margin: 20px auto;
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
+        .highlight-gain {
+            background: #e8f5e9;
+            color: var(--success);
+            padding: 12px;
             border-radius: 10px;
+            margin-top: 10px;
+            font-weight: 800;
+            font-size: 1.1rem;
         }
 
-        .sim-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
+        .simulacao-blue {
+            background: var(--primary);
+            color: #fff;
+            padding: 20px;
+            border-radius: 20px;
             margin-top: 20px;
+            margin-bottom: 40px;
         }
 
         .sim-item {
-            background: var(--white);
-            color: #333;
-            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
             border-radius: 10px;
-            text-align: center;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .sim-item strong {
-            display: block;
-            font-size: 1.1rem;
-            color: var(--success-green);
-            margin-top: 5px;
-        }
-
-        .badge-mg {
-            background: var(--secondary-blue);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-        }
-
+        .val-eco { color: #4CAF50; font-weight: 800; font-size: 1rem; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app-container">
     <header>
-        <img src="https://equilibriumdistribuidora.sharepoint.com/sites/MarketingProdutosRennova/Shared%20Documents/Marketing%20Produtos%20Rennova/01.%20Marcas,%20logo,%20KV/LOGOS%20PRODUTOS/LOGOS_RENNOVA_Elleva-210.png" alt="Rennova" class="logo">
-        <h1>Calculadora de Rentabilidade Elleva</h1>
+        <img src="https://i.ibb.co/LzNfX6W/logo-rennova.png" alt="Rennova" class="logo">
     </header>
 
-    <div class="card-concorrente">
-        <label>Preço de compra do Concorrente (150mg):</label>
-        <input type="number" id="inputConcorrente" placeholder="R$ 0,00" oninput="calcular()">
+    <div class="card" style="border-left: 5px solid #666;">
+        <label>Preço Pago no Concorrente (150mg):</label>
+        <input type="number" id="pConc" placeholder="R$ 0,00" oninput="calc()">
     </div>
 
-    <div class="products-grid">
-        
-        <div class="product-card">
-            <img src="https://equilibriumdistribuidora.sharepoint.com/sites/MarketingProdutosRennova/Shared%20Documents/Marketing%20Produtos%20Rennova/01.%20Marcas,%20logo,%20KV/Bioestimuladores/Elleva%20e%20Elleva%20X/MOCKUPS%20ELLEVA/03_frasco_caixa%20(1).png" class="product-img">
-            <div class="product-name">Rennova Elleva <span class="badge-mg">210mg</span></div>
-            
-            <label>Preço Elleva:</label>
-            <input type="number" id="inputElleva" placeholder="R$ 0,00" oninput="calcular()">
-            
-            <div class="info-row" style="margin-top:15px;">
-                <span>Equivalência:</span>
-                <span><strong>1,4 frascos</strong> (40% a mais)</span>
-            </div>
-            <div class="info-row">
-                <span>Custo Concorrente p/ 210mg:</span>
-                <span id="custoFinalConcElleva">R$ 0,00</span>
-            </div>
-            <div class="highlight-box">
-                <div>Vantagem Financeira p/ Frasco:</div>
-                <div class="savings" id="vantagemElleva">R$ 0,00</div>
-            </div>
+    <div class="card product-card">
+        <img src="https://i.ibb.co/V9mD5M8/elleva-210.png" class="product-img">
+        <div class="product-name">Elleva 210mg</div>
+        <div class="equivalencia">Rende 1,4x mais que o concorrente</div>
+        <label>Preço Elleva:</label>
+        <input type="number" id="pE210" placeholder="R$ 0,00" oninput="calc()">
+        <div class="result-row" style="margin-top:10px;">
+            <span>Custo Conc. p/ 210mg:</span>
+            <span id="rC210">R$ 0,00</span>
         </div>
-
-        <div class="product-card">
-            <img src="https://equilibriumdistribuidora.sharepoint.com/sites/MarketingProdutosRennova/Shared%20Documents/Marketing%20Produtos%20Rennova/01.%20Marcas,%20logo,%20KV/Bioestimuladores/Elleva%20e%20Elleva%20X/MOCKUPS%20ELLEVA%20X/MOCKUP_3D_CARTUCHO_SECUND_E_AMPOLA_RENNOVA_ELLEVA_PROPOSTAS03_CENA_01-Exibi%C3%A7%C3%A3o%20atual.png" class="product-img">
-            <div class="product-name">Rennova Elleva X <span class="badge-mg">630mg</span></div>
-            
-            <label>Preço Elleva X:</label>
-            <input type="number" id="inputEllevaX" placeholder="R$ 0,00" oninput="calcular()">
-            
-            <div class="info-row" style="margin-top:15px;">
-                <span>Equivalência:</span>
-                <span><strong>4,2 frascos</strong> (320% a mais)</span>
-            </div>
-            <div class="info-row">
-                <span>Custo Concorrente p/ 630mg:</span>
-                <span id="custoFinalConcEllevaX">R$ 0,00</span>
-            </div>
-            <div class="highlight-box">
-                <div>Vantagem Financeira p/ Frasco:</div>
-                <div class="savings" id="vantagemEllevaX">R$ 0,00</div>
-            </div>
+        <div class="highlight-gain">
+            Lucro p/ Frasco: <span id="v210">R$ 0,00</span>
         </div>
-
-        <div class="product-card">
-            <img src="https://equilibriumdistribuidora.sharepoint.com/sites/MarketingProdutosRennova/Shared%20Documents/Marketing%20Produtos%20Rennova/Projetos%20-%20Bioestimuladores/01.%20Produtos/1.%20Rennova%20Elleva/KV/MOCKUP_ELLEVA150/cxa%20e%20ampola%20com%20chao%20-%20cx%20lado.png" class="product-img">
-            <div class="product-name">Rennova Elleva 150 <span class="badge-mg">150mg</span></div>
-            
-            <label>Preço Elleva 150:</label>
-            <input type="number" id="inputElleva150" placeholder="R$ 0,00" oninput="calcular()">
-            
-            <div class="info-row" style="margin-top:15px;">
-                <span>Equivalência:</span>
-                <span><strong>1,0 frasco</strong> (Igual)</span>
-            </div>
-            <div class="info-row">
-                <span>Custo Concorrente p/ 150mg:</span>
-                <span id="custoFinalConcElleva150">R$ 0,00</span>
-            </div>
-            <div class="highlight-box">
-                <div>Vantagem Financeira p/ Frasco:</div>
-                <div class="savings" id="vantagemElleva150">R$ 0,00</div>
-            </div>
-        </div>
-
     </div>
 
-    <div class="simulation-section">
-        <h2>Simulação de Consumo Mensal</h2>
-        
-        <div class="input-monthly">
-            <label style="color: white; text-align: center;">Quantidade de frascos comprados/mês:</label>
-            <input type="number" id="qtdMes" placeholder="0" oninput="calcular()">
+    <div class="card product-card">
+        <img src="https://i.ibb.co/M9YhK0P/elleva-x.png" class="product-img">
+        <div class="product-name">Elleva X 630mg</div>
+        <div class="equivalencia">Rende 4,2x mais que o concorrente</div>
+        <label>Preço Elleva X:</label>
+        <input type="number" id="pEX" placeholder="R$ 0,00" oninput="calc()">
+        <div class="result-row" style="margin-top:10px;">
+            <span>Custo Conc. p/ 630mg:</span>
+            <span id="rCEX">R$ 0,00</span>
         </div>
+        <div class="highlight-gain">
+            Lucro p/ Frasco: <span id="vEX">R$ 0,00</span>
+        </div>
+    </div>
 
-        <div class="sim-grid">
-            <div class="sim-item">
-                Elleva (210mg)
-                <span style="display:block; font-size: 0.8rem;">Economia Mensal</span>
-                <strong id="ecoMesElleva">R$ 0,00</strong>
-                <span style="display:block; font-size: 0.8rem; margin-top:5px;">Economia Anual</span>
-                <strong id="ecoAnoElleva">R$ 0,00</strong>
+    <div class="card product-card">
+        <img src="https://i.ibb.co/mS7S6mX/elleva-150.png" class="product-img">
+        <div class="product-name">Elleva 150mg</div>
+        <div class="equivalencia">Mesma volumetria do concorrente</div>
+        <label>Preço Elleva 150:</label>
+        <input type="number" id="pE150" placeholder="R$ 0,00" oninput="calc()">
+        <div class="result-row" style="margin-top:10px;">
+            <span>Custo Conc. p/ 150mg:</span>
+            <span id="rCE150">R$ 0,00</span>
+        </div>
+        <div class="highlight-gain">
+            Lucro p/ Frasco: <span id="v150">R$ 0,00</span>
+        </div>
+    </div>
+
+    <div class="simulacao-blue">
+        <h3 style="margin-top:0; text-align:center;">Simulação de Ganho Mensal</h3>
+        <label style="color:#fff">Qtd de Frascos comprados/mês:</label>
+        <input type="number" id="qtd" placeholder="0" oninput="calc()">
+        
+        <div class="sim-item">
+            <span>Elleva 210</span>
+            <div style="text-align:right">
+                <div class="val-eco" id="m210">R$ 0,00</div>
+                <div style="font-size:0.7rem; color: #ddd" id="a210">Anual: R$ 0,00</div>
             </div>
-            <div class="sim-item">
-                Elleva X (630mg)
-                <span style="display:block; font-size: 0.8rem;">Economia Mensal</span>
-                <strong id="ecoMesEllevaX">R$ 0,00</strong>
-                <span style="display:block; font-size: 0.8rem; margin-top:5px;">Economia Anual</span>
-                <strong id="ecoAnoEllevaX">R$ 0,00</strong>
-            </div>
-            <div class="sim-item">
-                Elleva 150 (150mg)
-                <span style="display:block; font-size: 0.8rem;">Economia Mensal</span>
-                <strong id="ecoMesElleva150">R$ 0,00</strong>
-                <span style="display:block; font-size: 0.8rem; margin-top:5px;">Economia Anual</span>
-                <strong id="ecoAnoElleva150">R$ 0,00</strong>
+        </div>
+        <div class="sim-item">
+            <span>Elleva X</span>
+            <div style="text-align:right">
+                <div class="val-eco" id="mEX">R$ 0,00</div>
+                <div style="font-size:0.7rem; color: #ddd" id="aEX">Anual: R$ 0,00</div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    function format(val) {
-        return val.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
-    }
+    const f = v => v.toLocaleString('pt-br',{style:'currency',currency:'BRL'});
 
-    function calcular() {
-        // Inputs
-        const pConc = parseFloat(document.getElementById('inputConcorrente').value) || 0;
-        const pE210 = parseFloat(document.getElementById('inputElleva').value) || 0;
-        const pEX = parseFloat(document.getElementById('inputEllevaX').value) || 0;
-        const pE150 = parseFloat(document.getElementById('inputElleva150').value) || 0;
-        const qtd = parseFloat(document.getElementById('qtdMes').value) || 0;
+    function calc() {
+        const pc = parseFloat(document.getElementById('pConc').value) || 0;
+        const e210 = parseFloat(document.getElementById('pE210').value) || 0;
+        const ex = parseFloat(document.getElementById('pEX').value) || 0;
+        const e150 = parseFloat(document.getElementById('pE150').value) || 0;
+        const q = parseFloat(document.getElementById('qtd').value) || 0;
 
-        // Cálculos de Equivalência (Valor Final Custo Concorrente)
-        const vConcE210 = pConc * 1.4;
-        const vConcEX = pConc * 4.2;
-        const vConcE150 = pConc * 1.0;
+        const c210 = pc * 1.4;
+        const cex = pc * 4.2;
+        const c150 = pc * 1.0;
 
-        document.getElementById('custoFinalConcElleva').innerText = format(vConcE210);
-        document.getElementById('custoFinalConcEllevaX').innerText = format(vConcEX);
-        document.getElementById('custoFinalConcElleva150').innerText = format(vConcE150);
+        document.getElementById('rC210').innerText = f(c210);
+        document.getElementById('rCEX').innerText = f(cex);
+        document.getElementById('rCE150').innerText = f(c150);
 
-        // Vantagem Financeira por Frasco
-        const vanteE210 = vConcE210 - pE210;
-        const vanteEX = vConcEX - pEX;
-        const vanteE150 = vConcE150 - pE150;
+        const v210 = c210 - e210;
+        const vex = cex - ex;
+        const v150 = c150 - e150;
 
-        document.getElementById('vantagemElleva').innerText = format(vanteE210);
-        document.getElementById('vantagemEllevaX').innerText = format(vanteEX);
-        document.getElementById('vantagemElleva150').innerText = format(vanteE150);
+        document.getElementById('v210').innerText = f(v210);
+        document.getElementById('vEX').innerText = f(vex);
+        document.getElementById('v150').innerText = f(v150);
 
-        // Simulação Mensal (Fórmula pedida)
-        // (Valor Final Custo Concorrente x Média Qtd) - (Preço Unidade Elleva x Média Qtd)
-        
-        const ecoME210 = (vConcE210 * qtd) - (pE210 * qtd);
-        const ecoMEX = (vConcEX * qtd) - (pEX * qtd);
-        const ecoME150 = (vConcE150 * qtd) - (pE150 * qtd);
-
-        document.getElementById('ecoMesElleva').innerText = format(ecoME210);
-        document.getElementById('ecoAnoElleva').innerText = format(ecoME210 * 12);
-
-        document.getElementById('ecoMesEllevaX').innerText = format(ecoMEX);
-        document.getElementById('ecoAnoEllevaX').innerText = format(ecoMEX * 12);
-
-        document.getElementById('ecoMesElleva150').innerText = format(ecoME150);
-        document.getElementById('ecoAnoElleva150').innerText = format(ecoME150 * 12);
+        document.getElementById('m210').innerText = f(v210 * q);
+        document.getElementById('a210').innerText = "Anual: " + f(v210 * q * 12);
+        document.getElementById('mEX').innerText = f(vex * q);
+        document.getElementById('aEX').innerText = "Anual: " + f(vex * q * 12);
     }
 </script>
 
